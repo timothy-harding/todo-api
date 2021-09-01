@@ -52,7 +52,7 @@ public class StepDefinitions extends CucumberSpringConfiguration {
     @Then("response body is equal to {string}")
     public void assertContent(final String expectedBodyFile) throws Throwable {
         assertThatJson(mvcResult.getResponse().getContentAsString(UTF_8))
-                .whenIgnoringPaths("statusDate") //to be ignored as this field is dynamic and time significant
+                .whenIgnoringPaths("created","statusDate") //to be ignored as both the fields are dynamic and time significant
                 .isEqualTo(readFile(FILES_RESPONSES + expectedBodyFile));
     }
 }
