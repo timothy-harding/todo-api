@@ -61,5 +61,6 @@ docker run -p 9080:9080 -t interview/todo-api
 
 ### TODO / Improvements
 * Increase test coverage
+* Increase Javadoc/ comments
 * Enable caching
 * Enable pagination
