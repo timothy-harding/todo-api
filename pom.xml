@@ -20,6 +20,7 @@
 		<openapi-generator.version>5.2.1</openapi-generator.version>
 		<jackson-databind.version>0.2.1</jackson-databind.version>
 		<springfox.version>2.9.2</springfox.version>
+		<docker.image.prefix>interview</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -117,6 +118,17 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.12</version>
+				<configuration>
+					<repository>${docker.image.prefix}/${project.artifactId}</repository>
+					<buildArgs>
+						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
