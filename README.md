@@ -14,7 +14,7 @@ The service is extensible for any new requirements related to todo management.
 * Default properties are defined in the application.properties file (app port : `9080`)
 
 ### Service Endpoints
-[API Collections](postman/Todo API.postman_collection.json)
+[API Collections](postman/Todo%20API.postman_collection.json)
 
 ### Technical information
 This is a SpringBoot application that uses the following frameworks/libraries:
