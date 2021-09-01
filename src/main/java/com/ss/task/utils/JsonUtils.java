@@ -17,10 +17,8 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.ss.task.entity.Todo;
 import com.ss.task.model.JsonPatchOperation;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 @UtilityClass
-@Slf4j
 public class JsonUtils {
 
     public Todo applyPatch(final Todo todoEntity, final List<JsonPatchOperation> patchOperation)

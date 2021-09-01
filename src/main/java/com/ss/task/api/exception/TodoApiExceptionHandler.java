@@ -47,6 +47,12 @@ public class TodoApiExceptionHandler extends ResponseEntityExceptionHandler {
         return geResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(final NoHandlerFoundException ex, final HttpHeaders headers,
+            final HttpStatus status, final WebRequest request) {
+        return geResponseEntity(ex, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(final MethodArgumentTypeMismatchException ex,
             final WebRequest request) {
@@ -54,7 +60,7 @@ public class TodoApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<?> handleConstraintViolationException(final Exception ex, final WebRequest request) {
+    public ResponseEntity<?> handleConstraintViolationException(final ConstraintViolationException ex, final WebRequest request) {
         return geResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
@@ -71,12 +77,6 @@ public class TodoApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ForbiddenRequestException.class)
     public ResponseEntity<Object> handleForbiddenRequestException(final ForbiddenRequestException ex) {
         return geResponseEntity(ex, HttpStatus.FORBIDDEN);
-    }
-
-    @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(final NoHandlerFoundException ex, final HttpHeaders headers,
-            final HttpStatus status, final WebRequest request) {
-        return geResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ Exception.class })

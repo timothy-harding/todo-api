@@ -20,5 +20,5 @@ public interface TodoMapper {
 
     @Mapping(target = "status", source = "status")
     @Mapping(target = "statusDate", source = "statusDate")
-    void mapNewStatus(@MappingTarget Todo todo, String status, LocalDateTime statusDate);
+    void mapNewStatusAndDate(@MappingTarget Todo todo, String status, LocalDateTime statusDate);
 }
