@@ -1,0 +1,4 @@
+{
+  "status": "BAD_REQUEST",
+  "errorMessage": "Invalid patch request, unable to update the todo item with id: 1"
+}
