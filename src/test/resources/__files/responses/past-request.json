@@ -1,0 +1,4 @@
+{
+  "status": "BAD_REQUEST",
+  "errorMessage": "Invalid request, cannot add todo item with status PAST_DUE"
+}

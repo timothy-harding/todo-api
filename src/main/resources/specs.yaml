@@ -1,0 +1,252 @@
+openapi: 3.0.0
+info:
+  title: Todo API
+  description: Create and manage todo's
+  version: 1.0.0
+servers:
+  - url: http://localhost:9080/
+paths:
+  /todo/items:
+    get:
+      summary: Get all todo items
+      description: "Get all todo items , optionally can be filtered by status"
+      operationId: getTodoItems
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoInfo'
+
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                errorMessage: Validation error
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                errorMessage: Unexpected error
+    post:
+      summary: 'Create a todo item'
+      description: "API creates a todo item with given details"
+      operationId: addTodoItem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoInfo'
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoInfo'
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+              example:
+                errorMessage: Validation error
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+              example:
+                errorMessage: Unexpected error
+  /todo/items/{id}:
+    get:
+      summary: Get todo item by id
+      description: "Get details of specific item"
+      operationId: getTodoItem
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoInfo'
+
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                errorMessage: Validation error
+        "404":
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                errorMessage: Item not found
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                errorMessage: Unexpected error
+    patch:
+      summary: 'Update a todo item'
+      description: "API updates a todo item with given details"
+      operationId: updateTodoItem
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: JSON patch to update todo item
+        content:
+          application/json-patch+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/JsonPatchOperation'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoInfo'
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+              example:
+                errorMessage: Validation error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                errorMessage: Forbidden to change items which are past due
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+              example:
+                errorMessage: Unexpected error
+
+components:
+  schemas:
+    TodoInfo:
+      required:
+        - id
+        - description
+        - status
+        - dueDate
+      type: object
+      properties:
+        id:
+          description: "todo item id"
+          type: integer
+          example: 123
+          readOnly: true
+        description:
+          description: "todo description"
+          maxLength: 250
+          pattern: "^[a-zA-Z][a-zA-Z0-9_]+$"
+          type: string
+          example: team meeting
+          nullable: false
+        status:
+          allOf:
+            - $ref: '#/components/schemas/TodoStatus'
+            - description: status of the todo item
+            - nullable: false
+        created:
+          description: "Created date of todo item"
+          format: date-time
+          type: string
+        dueDate:
+          description: "Due date of todo item"
+          format: date-time
+          type: string
+        statusDate:
+          description: "Status date of todo item corresponding to current status"
+          format: date-time
+          type: string
+    TodoStatus:
+      enum:
+        - DONE
+        - NOT_DONE
+        - PAST_DUE
+      type: string
+      default: NOT_DONE
+    ApiError:
+      type: object
+      properties:
+        errorMessage:
+          description: "The error message to be displayed"
+          type: string
+          example: Error in operation
+        status:
+          description: "The error message to be displayed"
+          type: string
+          example: BAD_REQUEST
+    JsonPatchOperation:
+      type: object
+      properties:
+        op:
+          allOf:
+            - $ref: '#/components/schemas/Operation'
+            - description: JSON patch operation
+              example: replace
+        path:
+          description: JSON pointer to the attribute
+          type: string
+          example: /attributeName
+        value:
+          description: "Value to add. It can be a json string, object or collection"
+          type: object
+          example: newValue
+    Operation:
+      enum:
+        - replace
+      type: string
+      default: replace
+
+
+
