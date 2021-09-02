@@ -48,6 +48,7 @@ paths:
       description: "API creates a todo item with given details"
       operationId: addTodoItem
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -173,7 +174,6 @@ components:
   schemas:
     TodoInfo:
       required:
-        - id
         - description
         - status
         - dueDate
@@ -187,7 +187,7 @@ components:
         description:
           description: "todo description"
           maxLength: 250
-          pattern: "^[a-zA-Z][a-zA-Z0-9_]+$"
+          pattern: "^[a-zA-Z0-9 @&$]*$"
           type: string
           example: team meeting
           nullable: false
@@ -204,6 +204,7 @@ components:
           description: "Due date of todo item"
           format: date-time
           type: string
+          nullable: false
         statusDate:
           description: "Status date of todo item corresponding to current status"
           format: date-time
@@ -215,6 +216,7 @@ components:
         - PAST_DUE
       type: string
       default: NOT_DONE
+      nullable: false
     ApiError:
       type: object
       properties:

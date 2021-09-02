@@ -2,8 +2,6 @@ package com.ss.task.api;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import com.ss.task.model.JsonPatchOperation;
 import com.ss.task.model.TodoInfo;
 import com.ss.task.service.TodoService;
@@ -20,7 +18,7 @@ public class TodoController implements TodoApi {
     private final TodoService todoService;
 
     @Override
-    public ResponseEntity<TodoInfo> addTodoItem(@Valid final TodoInfo todoInfo) {
+    public ResponseEntity<TodoInfo> addTodoItem(final TodoInfo todoInfo) {
         return ResponseEntity.ok(todoService.addTodoItem(todoInfo));
     }
 
@@ -30,12 +28,12 @@ public class TodoController implements TodoApi {
     }
 
     @Override
-    public ResponseEntity<List<TodoInfo>> getTodoItems(@Valid final String status) {
+    public ResponseEntity<List<TodoInfo>> getTodoItems(final String status) {
         return ResponseEntity.ok(todoService.getTodoItems(status));
     }
 
     @Override
-    public ResponseEntity<TodoInfo> updateTodoItem(final Integer id, @Valid final List<JsonPatchOperation> jsonPatchOperations) {
+    public ResponseEntity<TodoInfo> updateTodoItem(final Integer id, final List<JsonPatchOperation> jsonPatchOperations) {
         return ResponseEntity.ok(todoService.updateTodoItem(id, jsonPatchOperations));
     }
 }
